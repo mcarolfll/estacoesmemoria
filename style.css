@@ -1,0 +1,508 @@
+:root {
+    --bg-color: #000000;
+    --card-bg-hidden: #CFAAFF; /* Lilás claro (carta virada para baixo) */
+    --card-bg-revealed: #FFFFFF; /* Fundo branco quando revela ícone */
+    --card-bg-match: #FFD700; /* Amarelo quando acerta */
+    
+    --accent-purple: #7B2CBF; /* Roxo profundo */
+    --accent-pink: #FF007F; /* Rosa neon */
+    --accent-blue: #00BFFF; /* Azul vibrante */
+    --accent-yellow: #FFD700; /* Amarelo ouro */
+    
+    --text-white: #FFFFFF;
+    --text-gray: #B0B0B0;
+    
+    --font-main: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --transition-speed: 0.4s;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-white);
+    font-family: var(--font-main);
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+.app-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background: radial-gradient(circle at center, #1a0b2e 0%, #000000 70%);
+}
+
+/* Telas */
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    padding: 2rem;
+}
+
+.screen.active {
+    display: flex;
+    opacity: 1;
+    z-index: 10;
+}
+
+/* Layout Geral de Conteúdo */
+.content-wrapper {
+    text-align: center;
+    max-width: 480px; /* Mais estreito estilo mobile */
+    width: 100%;
+}
+
+/* Tela Inicial */
+.logo-area {
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+.logo-area::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    height: 200px;
+    background: var(--accent-purple);
+    filter: blur(80px);
+    z-index: -1;
+    opacity: 0.5;
+}
+
+.main-logo {
+    width: 100px;
+    height: auto;
+    margin-bottom: 1rem;
+    border-radius: 20px;
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text-white);
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+p {
+    color: var(--text-gray);
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.instructions {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1.5rem;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.step .icon {
+    font-size: 1.5rem;
+    color: var(--accent-yellow); /* Cor dos ícones SVG */
+    margin-bottom: 0.5rem;
+}
+
+.step p {
+    font-size: 0.75rem;
+    color: var(--text-gray);
+    max-width: 80px;
+}
+
+/* Botões */
+button {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-family: var(--font-main);
+    font-weight: 700;
+    border-radius: 16px;
+    padding: 1.2rem 3rem;
+    font-size: 1.1rem;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    width: 100%;
+    letter-spacing: 1px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+    color: white;
+    box-shadow: 0 10px 20px rgba(123, 44, 191, 0.3);
+}
+
+.btn-primary:active {
+    transform: scale(0.98);
+}
+
+.btn-secondary {
+    background: transparent;
+    border: 2px solid var(--accent-blue);
+    color: var(--accent-blue);
+    margin-top: 1rem;
+}
+
+/* Tela de Jogo */
+.game-header {
+    width: 100%;
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Alterado de flex-end para center */
+    position: absolute;
+    top: 0;
+    z-index: 20;
+    background: transparent;
+}
+
+.btn-icon {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--text-white);
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    padding: 0;
+    transition: all 0.2s;
+}
+
+.btn-icon:active {
+    transform: scale(0.9);
+    background: rgba(255,255,255,0.1);
+}
+
+.header-left, .header-controls {
+    width: 60px; /* Largura fixa para manter timer centralizado */
+    display: flex;
+    justify-content: center;
+}
+
+.timer-container {
+    flex: 1;
+    text-align: center;
+}
+
+.game-header .label {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--text-gray);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+#current-player-display {
+    font-size: 1.5rem;
+    color: var(--text-white);
+}
+
+#timer-display {
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--text-white);
+    line-height: 1;
+}
+
+/* Container do Tabuleiro */
+.game-board-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 1rem;
+    margin-top: 60px;
+}
+
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    width: 100%;
+    max-width: 400px;
+    aspect-ratio: 4/5;
+}
+
+.card {
+    background-color: transparent;
+    perspective: 1000px;
+    cursor: pointer;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+}
+
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d;
+    border-radius: 16px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.card.flipped .card-inner {
+    transform: rotateY(180deg);
+}
+
+/* Frente da carta (virada para baixo) */
+.card-front {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff4aa;
+    border: none;
+}
+
+.card-front img {
+    width: 40px;
+    height: auto;
+    opacity: 0.5;
+    mix-blend-mode: multiply;
+}
+
+/* Verso da carta (revelada) */
+.card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--card-bg-revealed);
+    transform: rotateY(180deg);
+    overflow: hidden;
+}
+
+.card-back img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 16px;
+}
+
+/* Estado de Match (Par Encontrado) */
+.card.matched .card-back {
+    background-color: var(--accent-yellow); /* Amarelo */
+    animation: pulseMatch 0.5s ease-out;
+}
+
+@keyframes pulseMatch {
+    0% { transform: rotateY(180deg) scale(1); }
+    50% { transform: rotateY(180deg) scale(1.1); }
+    100% { transform: rotateY(180deg) scale(1); }
+}
+
+.game-footer {
+    position: absolute;
+    bottom: 2rem;
+    width: 100%;
+    text-align: center;
+}
+
+.pairs-info {
+    font-size: 1rem;
+    color: var(--text-gray);
+    background: rgba(255,255,255,0.1);
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+}
+
+.pairs-info strong {
+    color: var(--text-white);
+    margin-left: 5px;
+}
+
+/* Ranking e Resultados */
+.round-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.stat-box {
+    background-color: #1A1A1A;
+    padding: 1.5rem;
+    border-radius: 20px;
+    border: 1px solid #333;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    color: var(--text-gray);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-white);
+}
+
+/* Leaderboard Estilo Mobile */
+.ranking-list {
+    width: 100%;
+    margin: 2rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.ranking-item {
+    background-color: #1E1E1E;
+    padding: 1rem;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    border: none;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Top 3 Colors */
+.ranking-item:nth-child(1) { border-left: 4px solid var(--accent-yellow); background: linear-gradient(90deg, rgba(255, 215, 0, 0.1), transparent); }
+.ranking-item:nth-child(2) { border-left: 4px solid var(--text-gray); }
+.ranking-item:nth-child(3) { border-left: 4px solid #cd7f32; }
+
+.rank-pos {
+    font-weight: 700;
+    font-size: 1.2rem;
+    width: 30px;
+    color: var(--text-white);
+    z-index: 2;
+}
+
+.ranking-item.winner .rank-pos {
+    color: var(--accent-yellow);
+}
+
+.ranking-item.winner::after {
+    content: '👑';
+    position: absolute;
+    right: -10px;
+    top: -10px;
+    font-size: 4rem;
+    opacity: 0.1;
+    transform: rotate(15deg);
+}
+
+.rank-name {
+    flex: 1;
+    text-align: left;
+    font-weight: 600;
+    padding-left: 0.5rem;
+    font-size: 1rem;
+    z-index: 2;
+}
+
+.rank-score {
+    text-align: right;
+    z-index: 2;
+}
+
+.rank-score div:first-child {
+    color: var(--accent-blue);
+    font-weight: 700;
+}
+
+.ranking-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.ranking-buttons button {
+    margin: 0; /* Resetar margem do btn-secondary */
+}
+
+/* Scrollbar invisível */
+.ranking-list::-webkit-scrollbar {
+    display: none;
+}
+
+/* Animações utilitárias */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.ranking-item {
+    animation: fadeIn 0.5s ease-out forwards;
+    opacity: 0; /* Começa invisível */
+}
+
+.ranking-item:nth-child(1) { animation-delay: 0.1s; }
+.ranking-item:nth-child(2) { animation-delay: 0.2s; }
+.ranking-item:nth-child(3) { animation-delay: 0.3s; }
+.ranking-item:nth-child(4) { animation-delay: 0.4s; }
+.ranking-item:nth-child(5) { animation-delay: 0.5s; }
+
+/* Media Queries para Telas Maiores/Menores */
+@media (min-width: 768px) {
+    .game-board {
+        gap: 20px;
+        max-width: 500px;
+    }
+    
+    h1 {
+        font-size: 3rem;
+    }
+    
+    #timer-display {
+        font-size: 4rem;
+    }
+}

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Jogo da Memória - Totem Interativo</title>
+    <link rel="icon" href="assets/img/trevo.avif" type="image">
+    <link rel="stylesheet" href="style.css">
+    <!-- Fonts removed for offline compatibility -->
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Tela Inicial -->
+        <section id="start-screen" class="screen active">
+            <div class="content-wrapper">
+                <div class="logo-area">
+                    <img src="assets/img/trevo.avif" alt="Logo Trevo" class="main-logo">
+                    <h1>MATCH CARDS</h1>
+                    <p>Encontre os pares antes que o tempo acabe.</p>
+                </div>
+                
+                <div class="instructions">
+                    <div class="step">
+                        <span class="icon">
+                            <!-- User/Group Icon -->
+                            <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
+                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                            </svg>
+                        </span>
+                        <p>3 Rodadas</p>
+                        <p>(1 Jogador por vez)</p>
+                    </div>
+                    <div class="step">
+                        <span class="icon">
+                            <!-- Clock Icon -->
+                            <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
+                                <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                            </svg>
+                        </span>
+                        <p>60 Segundos por rodada</p>
+                    </div>
+                    <div class="step">
+                        <span class="icon">
+                            <!-- Trophy Icon -->
+                            <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
+                                <path d="M20.2 2H3.8c-1.1 0-2 .9-2 2v2c0 1.1.9 2 2 2 .6 0 1.1-.2 1.5-.5.2 1.5 1 2.9 2.1 3.9 1.4 1.2 3.2 2 5.1 2.1V15c-2 .2-3.8 1-5.1 2.3-.5.4-.8.9-1 1.4h11.1c-.2-.5-.5-1-1-1.4-1.3-1.3-3.1-2.1-5.1-2.3v-1.5c1.9-.1 3.7-.9 5.1-2.1 1.1-1 1.9-2.4 2.1-3.9.5.3 1 .5 1.5.5 1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-15 4V4h1.5v2H5.2zm13.6 0H17.3V4h1.5v2zM12 12c-2.2 0-4-1.8-4-4V4h8v4c0 2.2-1.8 4-4 4z"/>
+                            </svg>
+                        </span>
+                        <p>Ranking Final</p>
+                    </div>
+                </div>
+
+                <button id="btn-start" class="btn-primary">JOGAR</button>
+            </div>
+        </section>
+
+        <!-- Tela do Jogo -->
+        <section id="game-screen" class="screen">
+            <div class="game-header">
+                <div class="header-left">
+                    <div class="player-info">
+                        <span class="label">Jogador</span>
+                        <span id="current-player-display" class="value">1</span>
+                    </div>
+                </div>
+                
+                <div class="timer-container">
+                    <span id="timer-display" class="value">60s</span>
+                </div>
+
+                <div class="header-controls">
+                    <button id="btn-sound" class="btn-icon">🔊</button>
+                </div>
+            </div>
+
+            <div class="game-board-container">
+                <div id="game-board" class="game-board">
+                    <!-- Cartas serão geradas via JS -->
+                </div>
+            </div>
+
+            <div class="game-footer">
+                <div class="pairs-info">
+                    <span>Pares: <strong id="pairs-count">0</strong></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tela de Transição/Resultado da Rodada -->
+        <section id="round-result-screen" class="screen">
+            <div class="content-wrapper">
+                <h2>Fim da Rodada!</h2>
+                <div class="round-stats">
+                    <p>Jogador <span id="round-player-num">1</span></p>
+                    <div class="stat-box">
+                        <span class="stat-label">Pares Encontrados</span>
+                        <span id="round-pairs" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Tempo Restante</span>
+                        <span id="round-time" class="stat-value">0s</span>
+                    </div>
+                </div>
+                <button id="btn-next-round" class="btn-primary">Próximo Jogador</button>
+            </div>
+        </section>
+
+        <!-- Tela de Ranking Final -->
+        <section id="ranking-screen" class="screen">
+            <div class="content-wrapper">
+                <h2>RANKING FINAL</h2>
+                <div id="ranking-list" class="ranking-list">
+                    <!-- Ranking gerado via JS -->
+                </div>
+                <div class="ranking-buttons">
+                    <button id="btn-home" class="btn-primary">Voltar ao Início</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('Service Worker registered!', reg))
+                    .catch(err => console.log('Service Worker registration failed:', err));
+            });
+        }
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
