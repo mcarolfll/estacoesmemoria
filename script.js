@@ -60,8 +60,10 @@ function playWinSound() {
 
 // Ícones para as cartas (Pool total de imagens)
 const ALL_AVAILABLE_ICONS = [
-    'assets/img/img1.jpg', 'assets/img/img2.jpg', 'assets/img/img3.jpg', 'assets/img/img4.jpg', 
-    'assets/img/img5.jpg', 'assets/img/img6.jpg', 'assets/img/img7.jpg', 'assets/img/img8.jpg', 'assets/img/img9.jpg'
+    'assets/img/img1.avif', 'assets/img/img2.avif', 'assets/img/img3.avif', 'assets/img/img4.avif', 
+    'assets/img/img5.avif', 'assets/img/img6.avif', 'assets/img/img7.avif', 'assets/img/img8.avif', 
+    'assets/img/img9.avif','assets/img/img10.avif', 'assets/img/img11.avif', 'assets/img/img12.avif', 
+    'assets/img/img13.avif','assets/img/img14.avif','assets/img/img15.avif'
 ];
 
 // Estado do Jogo
