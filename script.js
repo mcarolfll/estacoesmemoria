@@ -138,15 +138,30 @@ ui.btnSound.addEventListener('click', () => {
 
 // Inicialização
 function init() {
-    // Inicializar estado de áudio se necessário
+    console.log("Jogo inicializado");
 }
 
+// Handler global de erros para debug no totem
+window.onerror = function(msg, url, lineNo, columnNo, error) {
+    alert(`Erro: ${msg}\nLinha: ${lineNo}`);
+    return false;
+};
+
 function switchScreen(screenName) {
-    Object.values(screens).forEach(s => s.classList.remove('active'));
-    screens[screenName].classList.add('active');
+    console.log(`Mudando para tela: ${screenName}`);
+    Object.values(screens).forEach(s => {
+        if (s) s.classList.remove('active');
+    });
+    
+    if (screens[screenName]) {
+        screens[screenName].classList.add('active');
+    } else {
+        console.error(`Tela não encontrada: ${screenName}`);
+    }
 }
 
 function startGame() {
+    console.log("Iniciando jogo...");
     // Inicializar áudio no clique do usuário
     initAudio();
 
