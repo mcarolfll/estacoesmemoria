@@ -1,0 +1,25 @@
+{
+  "name": "match-cards-totem",
+  "version": "1.0.0",
+  "description": "Jogo da Memória para Totem Interativo",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "serve": "http-server . -a 0.0.0.0 -p 8080 -c-1",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "keywords": [
+    "totem",
+    "kiosk",
+    "game",
+    "offline"
+  ],
+  "author": "SSTI",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^28.1.0",
+    "electron-builder": "^24.9.1",
+    "http-server": "^14.1.1"
+  }
+}
