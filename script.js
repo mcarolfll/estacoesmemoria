@@ -6,7 +6,22 @@ const GAME_CONFIG = {
 };
 
 // Sistema de Áudio (Web Audio API)
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+let audioCtx = null;
+
+function initAudio() {
+    if (!audioCtx) {
+        try {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        } catch (e) {
+            console.error("Web Audio API não suportada ou erro ao iniciar:", e);
+            state.soundEnabled = false; // Desativa som se falhar
+        }
+    }
+    
+    if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume().catch(e => console.error("Erro ao retomar AudioContext:", e));
+    }
+}
 
 const sounds = {
     flip: () => playTone(400, 'sine', 0.1),
@@ -18,6 +33,10 @@ const sounds = {
 function playTone(freq, type, duration, vol = 0.1) {
     if (!state.soundEnabled) return;
     
+    // Tenta inicializar se não existir (fallback)
+    if (!audioCtx) initAudio();
+    if (!audioCtx) return; // Se ainda não existir, aborta
+
     // Resume context if suspended (browser policy)
     if (audioCtx.state === 'suspended') {
         audioCtx.resume();
@@ -128,6 +147,9 @@ function switchScreen(screenName) {
 }
 
 function startGame() {
+    // Inicializar áudio no clique do usuário
+    initAudio();
+
     // Resetar estado global
     state.players = [];
     state.currentRound = 1;
